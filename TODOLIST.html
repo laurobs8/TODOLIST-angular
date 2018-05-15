@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="TODOLIST">
+<head>
+    <meta charset="UTF-8">
+    <title>To do List com AngularJS</title>
+    <link href="C:/Users/lauro-pc/Documents/Curso JavasScript/prog/css/bootstrap.min.css" rel="stylesheet">
+    <link href="C:/Users/lauro-pc/Documents/Curso JavasScript/prog/css/bootstrap-theme.css" rel="stylesheet">
+    <script src="C:/Users/lauro-pc/Documents/Curso-de-AngularJS/Aulas Angular/angular.js"></script>
+        <style>
+      
+    .selecionado{
+        background-color: rgb(238, 102, 102);
+    }
+    .negrito{
+        font-weight: bold;
+    }
+    </style>
+<script>
+        angular.module("TODOLIST", []);
+        angular.module("TODOLIST").controller("TODOLISTCtrl", function($scope){
+            $scope.app = "To Do List"
+            $scope.contatos = [ 
+            {nome: 'Estudar JavaScript', Estudar: "Quinta-Feira",},
+            {nome: 'Estudar AngularJS', Estudar: "Quarta-Feira",},
+            {nome: 'Estudar NodeJS', Estudar: "Sexta-Feira",},
+            {nome: 'Estudar ReactJS', Estudar: "Segunda-Feira",},
+          ];
+                    
+          $scope.adicionarTarefa = function(contato){
+            $scope.contatos.push(angular.copy(contato));
+           // delete $scope.contato
+          };
+          $scope.apagarTarefa = function(contatos){
+            $scope.contatos = contatos.filter(function(contato){
+                if(!contato.selecionado) return contato;
+            });
+
+            $scope.isContatoSelecionado = function(contatos){
+                var isContatoSelecionado = contatos.some(function(contato){
+                    return contato.selecionado;
+               })
+               console.log(isContatoSelecionado);
+            }
+          };
+        });
+        </script>
+</head>
+
+
+<body ng-controller="TODOLISTCtrl">
+<h1> To do List com AngularJS</h1>
+   
+<div class='jumbotron'>
+       <h3 >{{app}}</h3 >
+         <table class='table'>
+            <tr>
+                <th></th>
+                <th>Tarefa</th>
+                <th>Quando?</th>
+            </tr>
+            <tr ng-class="{'selecionado negrito': contato.selecionado}" ng-repeat='contato in contatos'>             
+                <td><input type="checkbox" ng-model='contato.selecionado'/></td>
+                <td>{{contato.nome}}</td>
+                <td>{{contato.Estudar}}</td>
+                <td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div></td>
+
+            </tr>
+        <hr>
+         
+        </table>
+        <input class="form-control" type="text" ng-model="contato.nome" placeholder="Adicionar qual tarefa"/>
+        <input class="form-control" type="text" ng-model="contato.Estudar" placeholder="Quando pretende fazer?"/>
+        <button class="btn btn-primary btn-block" ng-click="adicionarTarefa(contato)" ng-disabled="!contato.nome || !contato.Estudar">Adicionar Tarefa</button>
+        <button class="btn btn-danger btn-block" ng-click="apagarTarefa(contatos)" ng-disabled="isContatoSelecionado(contatos)">Deletar Tarefa</button>
+    </div>
+    
+
+
+</body>
+</html>
